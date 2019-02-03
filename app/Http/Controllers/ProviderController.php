@@ -8,8 +8,12 @@ use Illuminate\Http\Request;
 
 class ProviderController extends Controller
 {
-    public function index(){
-        return Provider::all();
+    public function index(Request $request){
+        return response()->json([
+            "success" => true,
+            "total"=>Provider::all()->count(),
+            "data"=>Provider::skip((int)$request->input("start"))->take((int)$request->input("limit"))->get()
+        ]);
     }
 
     public function show($id){

@@ -4,11 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Product;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Input;
 
 class ProductController extends Controller
 {
-    public function index(){
-        return Product::all();
+    public function index(Request $request){
+        return response()->json([
+            "success" => true,
+            "total"=>Product::all()->count(),
+            "data"=>Product::skip((int)$request->input("start"))->take((int)$request->input("limit"))->get()
+        ]);
     }
 
     public function show($id){

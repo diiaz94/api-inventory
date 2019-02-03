@@ -7,8 +7,12 @@ use Illuminate\Http\Request;
 
 class StoreController extends Controller
 {
-    public function index(){
-        return Store::all();
+    public function index(Request $request){
+        return response()->json([
+            "success" => true,
+            "total"=>Store::all()->count(),
+            "data"=>Store::skip((int)$request->input("start"))->take((int)$request->input("limit"))->get()
+        ]);
     }
 
     public function show($id){
