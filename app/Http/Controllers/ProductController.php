@@ -18,19 +18,28 @@ class ProductController extends Controller
     }
 
     public function show($id){
-        return Product::find($id);
+        return response()->json([
+            "success" => true,
+            "data"=>Product::find($id)
+        ]);
     }
 
     public function store(Request $request){
         $product = Product::create($request->all());
         $product->providers()->attach($request->input("provider"));
-        return $product;
+        return response()->json([
+            "success" => true,
+            "data"=>$product
+        ]);
     }
 
     public function update(Request $request,$id){
         $product = Product::findOrFail($id);
         $product->update($request->all());
-        return $product;
+        return response()->json([
+            "success" => true,
+            "data"=>$product
+        ]);
     }
 
     public function delete(Request $request,$id){

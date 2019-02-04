@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Provider;
 use App\Store;
 use Illuminate\Http\Request;
 
@@ -16,18 +17,29 @@ class StoreController extends Controller
     }
 
     public function show($id){
-        return Store::find($id);
+        return response()->json([
+            "success" => true,
+            "data"=>Store::find($id)
+        ]);
     }
 
     public function store(Request $request){
         $store = Store::create($request->all());
-        return $store;
+        $provider = Provider::find($request->input("provider"));
+        if($provider != null)  $store->providers()->attach($request->input("provider"));
+        return response()->json([
+            "success" => true,
+            "data"=>$store
+        ]);
     }
 
     public function update(Request $request,$id){
         $store = Store::findOrFail($id);
         $store->update($request->all());
-        return $store;
+        return response()->json([
+            "success" => true,
+            "data"=>$store
+        ]);
     }
 
     public function delete(Request $request,$id){

@@ -17,20 +17,29 @@ class ProviderController extends Controller
     }
 
     public function show($id){
-        return Provider::find($id);
+        return response()->json([
+            "success" => true,
+            "data"=>Provider::find($id)
+        ]);
     }
 
     public function store(Request $request){
         $provider = Provider::create($request->all());
         $product = Product::find($request->input("product"));
         if($product != null) $provider->products()->attach($request->input("product"));
-        return $provider;
+        return response()->json([
+            "success" => true,
+            "data"=>$provider
+        ]);
     }
 
     public function update(Request $request,$id){
         $provider = Provider::findOrFail($id);
         $provider->update($request->all());
-        return $provider;
+        return response()->json([
+            "success" => true,
+            "data"=>$provider
+        ]);
     }
 
     public function delete(Request $request,$id){
